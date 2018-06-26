@@ -74,12 +74,12 @@ PAYOUTS = {
         "phrase" : "JACKPOT! 226! Your bid has been multiplied * 1000!"
     },
     (SMReel.flc, SMReel.flc, SMReel.flc) : {
-        "payout" : lambda x: x + 20000,
-        "phrase" : "4LC! +20000!"
+        "payout" : lambda x: x + 10000,
+        "phrase" : "4LC! +10000!"
     },
     (SMReel.cherries, SMReel.cherries, SMReel.cherries) : {
-        "payout" : lambda x: x + 16000,
-        "phrase" : "Three cherries! +16000!"
+        "payout" : lambda x: x + 8000,
+        "phrase" : "Three cherries! +8000!"
     },
     (SMReel.two, SMReel.six) : {
         "payout" : lambda x: x * 40 + x,
@@ -90,8 +90,8 @@ PAYOUTS = {
         "phrase" : "Two cherries! Your bid has been multiplied * 30!"
     },
     "3 symbols" : {
-        "payout" : lambda x: x + 10000,
-        "phrase" : "Three symbols! +10000!"
+        "payout" : lambda x: x + 5000,
+        "phrase" : "Three symbols! +5000!"
     },
     "2 symbols" : {
         "payout" : lambda x: x * 20 + x,
@@ -103,10 +103,10 @@ SLOT_PAYOUTS_MSG = ("Slot machine payouts:\n"
                     "{two.value} {two.value} {six.value} Bet * 1000\n"
                     "{flc.value} {flc.value} {flc.value} +10000\n"
                     "{cherries.value} {cherries.value} {cherries.value} +8000\n"
-                    "{two.value} {six.value} Bet * 4\n"
-                    "{cherries.value} {cherries.value} Bet * 3\n\n"
+                    "{two.value} {six.value} Bet * 40\n"
+                    "{cherries.value} {cherries.value} Bet * 30\n\n"
                     "Three symbols: +5000\n"
-                    "Two symbols: Bet * 2".format(**SMReel.__dict__))
+                    "Two symbols: Bet * 20".format(**SMReel.__dict__))
 
 
 class Bank:
