@@ -74,28 +74,28 @@ PAYOUTS = {
         "phrase" : "JACKPOT! 226! Your bid has been multiplied * 1000!"
     },
     (SMReel.flc, SMReel.flc, SMReel.flc) : {
-        "payout" : lambda x: x + 10000,
-        "phrase" : "4LC! +10000!"
+        "payout" : lambda x: x + 20000,
+        "phrase" : "4LC! +20000!"
     },
     (SMReel.cherries, SMReel.cherries, SMReel.cherries) : {
-        "payout" : lambda x: x + 8000,
-        "phrase" : "Three cherries! +8000!"
+        "payout" : lambda x: x + 16000,
+        "phrase" : "Three cherries! +16000!"
     },
     (SMReel.two, SMReel.six) : {
-        "payout" : lambda x: x * 4 + x,
-        "phrase" : "2 6! Your bid has been multiplied * 4!"
+        "payout" : lambda x: x * 40 + x,
+        "phrase" : "2 6! Your bid has been multiplied * 40!"
     },
     (SMReel.cherries, SMReel.cherries) : {
-        "payout" : lambda x: x * 3 + x,
-        "phrase" : "Two cherries! Your bid has been multiplied * 3!"
+        "payout" : lambda x: x * 30 + x,
+        "phrase" : "Two cherries! Your bid has been multiplied * 30!"
     },
     "3 symbols" : {
-        "payout" : lambda x: x + 5000,
-        "phrase" : "Three symbols! +5000!"
+        "payout" : lambda x: x + 10000,
+        "phrase" : "Three symbols! +10000!"
     },
     "2 symbols" : {
-        "payout" : lambda x: x * 2 + x,
-        "phrase" : "Two consecutive symbols! Your bid has been multiplied * 2!"
+        "payout" : lambda x: x * 20 + x,
+        "phrase" : "Two consecutive symbols! Your bid has been multiplied * 20!"
     },
 }
 
