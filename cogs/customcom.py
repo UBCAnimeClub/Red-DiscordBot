@@ -2,9 +2,10 @@ from discord.ext import commands
 from .utils.dataIO import dataIO
 from .utils import checks
 from .utils.chat_formatting import pagify, box
+from random import choice
+
 import os
 import re
-
 
 class CustomCommands:
     """Custom commands
@@ -21,6 +22,31 @@ class CustomCommands:
         """Custom commands management"""
         if ctx.invoked_subcommand is None:
             await self.bot.send_cmd_help(ctx)
+
+    @customcom.command(name="dump", pass_context=True)
+    @checks.mod_or_permissions(administrator=True)
+    async def cc_dump(self, ctx, command : str):
+        """Shows the raw string behind a command
+
+        Example:
+        [p]customcom dump yourcommand
+
+        This is useful for showing all the options for randomized commands
+        """
+        server = ctx.message.server
+        command = command.lower()
+        if server.id in self.c_commands:
+            cmdlist = self.c_commands[server.id]
+            if command in cmdlist:
+                await self.bot.say(cmdlist[command])
+            else:
+                await self.bot.say("That command doesn't exist. Use "
+                                   "`{}customcom add` to add it."
+                                   "".format(ctx.prefix))
+        else:
+            await self.bot.say("There are no custom commands in this server."
+                               " Use `{}customcom add` to start adding some."
+                               "".format(ctx.prefix))
 
     @customcom.command(name="add", pass_context=True)
     @checks.mod_or_permissions(administrator=True)
@@ -154,6 +180,8 @@ class CustomCommands:
         for result in results:
             param = self.transform_parameter(result, message)
             command = command.replace("{" + result + "}", param)
+
+        command = choice(command.split("\n\n"))
         return command
 
     def transform_parameter(self, result, message):

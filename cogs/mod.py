@@ -1128,7 +1128,7 @@ class Mod:
         return msg
 
     @commands.group(name="filter", pass_context=True, no_pm=True)
-    @checks.mod_or_permissions(manage_messages=True)
+    @checks.mod_or_permissions(administrator=True)
     async def _filter(self, ctx):
         """Adds/removes words from filter
 
