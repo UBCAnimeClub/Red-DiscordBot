@@ -251,9 +251,6 @@ class Bank:
     def _save_bank(self):
         dataIO.save_json("data/economy/bank.json", self.accounts)
 
-    def _save_payday_register(self):
-        dataIO.save_json("data/economy/payday.json", self.payday_register)
-
     def _get_account(self, user):
         server = user.server
         try:
@@ -711,6 +708,8 @@ class Economy:
                 result.append("{} {}".format(value, name))
         return ', '.join(result[:granularity])
 
+    def _save_payday_register(self):
+        dataIO.save_json("data/economy/payday.json", self.payday_register)
 
 def check_folders():
     if not os.path.exists("data/economy"):
