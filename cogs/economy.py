@@ -300,6 +300,7 @@ class Economy:
             self.settings = {}
         self.settings = defaultdict(default_settings.copy, self.settings)
         self.payday_register = dataIO.load_json("data/economy/payday.json")
+        self.payday_register = defaultdict(dict, self.payday_register)
         self.slot_register = defaultdict(dict)
 
     @commands.group(name="bank", pass_context=True)
