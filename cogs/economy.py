@@ -432,7 +432,7 @@ class Economy:
                             author.mention,
                             str(self.settings[server.id]["PAYDAY_CREDITS"])))
                 else:
-                    dtime = self.display_time((parser.parse(self.settings[server.id]["PAYDAY_TIME"]) - now).total_seconds())
+                    dtime = self.display_time((parser.parse(self.payday_register[server.id][id]) - now).total_seconds())
                     await self.bot.say(
                         "{} Too soon. For your next payday you have to"
                         " wait {}.".format(author.mention, dtime))
