@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 from cogs.utils.dataIO import dataIO
 from collections import namedtuple, defaultdict, deque
-from datetime import datetime
+from datetime import datetime, timedelta
 from copy import deepcopy
 from .utils import checks
 from cogs.utils.chat_formatting import pagify, box
@@ -11,6 +11,8 @@ import os
 import time
 import logging
 import random
+
+from dateutil import parser
 
 default_settings = {"PAYDAY_TIME": 300, "PAYDAY_CREDITS": 120,
                     "SLOT_MIN": 5, "SLOT_MAX": 100, "SLOT_TIME": 0,
@@ -418,28 +420,27 @@ class Economy:
         id = author.id
         if self.bank.account_exists(author):
             if id in self.payday_register[server.id]:
-                seconds = abs(self.payday_register[server.id][
-                              id] - int(time.perf_counter()))
-                if seconds >= self.settings[server.id]["PAYDAY_TIME"]:
-                    self.bank.deposit_credits(author, self.settings[
-                                              server.id]["PAYDAY_CREDITS"])
-                    self.payday_register[server.id][
-                        id] = int(time.perf_counter())
+                cooldown = parser.parse(self.payday_register[server.id][id])
+                now = datetime.utcnow()
+                if now >= cooldown:
+                    self.bank.deposit_credits(author, self.settings[server.id]["PAYDAY_CREDITS"])
+                    new_time = now + timedelta(days=1)
+                    self.payday_register[server.id][id] = datetime(new_time.year, new_time.month, new_time.day).isoformat()
                     await self.bot.say(
                         "{} Here, take some credits. Enjoy! (+{}"
                         " credits!)".format(
                             author.mention,
                             str(self.settings[server.id]["PAYDAY_CREDITS"])))
                 else:
-                    dtime = self.display_time(
-                        self.settings[server.id]["PAYDAY_TIME"] - seconds)
+                    dtime = self.display_time((parser.parse(self.settings[server.id]["PAYDAY_TIME"]) - now).total_seconds())
                     await self.bot.say(
                         "{} Too soon. For your next payday you have to"
                         " wait {}.".format(author.mention, dtime))
             else:
-                self.payday_register[server.id][id] = int(time.perf_counter())
-                self.bank.deposit_credits(author, self.settings[
-                                          server.id]["PAYDAY_CREDITS"])
+                now = datetime.utcnow()
+                new_time = now + timedelta(days=1)
+                self.payday_register[server.id][id] = datetime(new_time.year, new_time.month, new_time.day).isoformat()
+                self.bank.deposit_credits(author, self.settings[server.id]["PAYDAY_CREDITS"])
                 await self.bot.say(
                     "{} Here, take some credits. Enjoy! (+{} credits!)".format(
                         author.mention,
