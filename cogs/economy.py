@@ -251,6 +251,9 @@ class Bank:
     def _save_bank(self):
         dataIO.save_json("data/economy/bank.json", self.accounts)
 
+    def _save_payday_register(self):
+        dataIO.save_json("data/economy/payday.json", self.payday_register)
+
     def _get_account(self, user):
         server = user.server
         try:
@@ -296,7 +299,7 @@ class Economy:
             default_settings = self.settings
             self.settings = {}
         self.settings = defaultdict(default_settings.copy, self.settings)
-        self.payday_register = defaultdict(dict)
+        self.payday_register = dataIO.load_json("data/economy/payday.json")
         self.slot_register = defaultdict(dict)
 
     @commands.group(name="bank", pass_context=True)
@@ -426,6 +429,8 @@ class Economy:
                     self.bank.deposit_credits(author, self.settings[server.id]["PAYDAY_CREDITS"])
                     new_time = now + timedelta(days=1)
                     self.payday_register[server.id][id] = datetime(new_time.year, new_time.month, new_time.day).isoformat()
+                    self._save_payday_register()
+
                     await self.bot.say(
                         "{} Here, take some credits. Enjoy! (+{}"
                         " credits!)".format(
@@ -440,6 +445,8 @@ class Economy:
                 now = datetime.utcnow()
                 new_time = now + timedelta(days=1)
                 self.payday_register[server.id][id] = datetime(new_time.year, new_time.month, new_time.day).isoformat()
+                self._save_payday_register()
+
                 self.bank.deposit_credits(author, self.settings[server.id]["PAYDAY_CREDITS"])
                 await self.bot.say(
                     "{} Here, take some credits. Enjoy! (+{} credits!)".format(
@@ -722,6 +729,10 @@ def check_files():
         print("Creating empty bank.json...")
         dataIO.save_json(f, {})
 
+    f = "data/economy/payday.json"
+    if not dataIO.is_valid_json(f):
+        print("Creating empty payday.json...")
+        dataIO.save_json(f, {})
 
 def setup(bot):
     global logger
